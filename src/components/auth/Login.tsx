@@ -51,6 +51,7 @@ export default function Login() {
                 id="password"
                 name="password"
                 placeholder="Enter your password"
+                type="password"
               />
               <span className="text-red-400">{state?.errors?.password}</span>
             </div>
