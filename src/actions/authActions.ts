@@ -54,13 +54,10 @@ export async function registerAction(prevState: any, formdata: FormData) {
       return { status: 400, errors: { email: error.message } };
     }
 
-    // if (newUser.user) {
-    //   await supabase.auth.signInWithPassword({
-    //     email: payload.email,
-    //     password: payload.password,
-    //   });
-
-    // }
+    await supabase.auth.signInWithPassword({
+      email: payload.email,
+      password: payload.password,
+    });
   } catch (error) {
     if (error instanceof errors.E_VALIDATION_ERROR) {
       return { status: 400, errors: error.messages };
