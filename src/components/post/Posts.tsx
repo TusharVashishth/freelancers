@@ -60,23 +60,26 @@ export default function Posts({
           schema: "public",
           table: "posts",
         },
-        (payload) => {
-          console.log("The delete payload is", payload);
+        async (payload) => {
+          const { data: postUser } = await supabase
+            .from("users")
+            .select("id,name,email,username,profile_image")
+            .eq("id", payload.new?.user_id)
+            .single();
           const data: PostType = {
             post_id: payload.new?.id,
             user_id: payload.new?.user_id,
             content: payload.new?.content,
             image: payload.new?.image,
-            likes_count: 0,
-            reply_count: 0,
-            username: user.user_metadata?.["username"],
-            name: user.user_metadata?.["name"],
-            email: user.user_metadata?.["email"],
-            profile_image: user.user_metadata?.["profile_image"],
+            likes_count: payload.new?.likes_count,
+            reply_count: payload.new?.reply_count,
             created_at: payload.new?.created_at,
+            email: postUser?.email!,
             liked: false,
+            name: postUser?.name,
+            username: postUser?.username,
+            profile_image: postUser?.profile_image,
           };
-
           setPosts([data, ...posts]);
         }
       )
